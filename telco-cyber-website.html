@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 US Telco Cybersecurity Risk Intelligence Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0a0d14;
+  --ink2: #0d1120;
+  --paper: #f5f2eb;
+  --signal: #e8ff47;
+  --signal-dim: #c9e020;
+  --wire: #1a2744;
+  --static: #8a9bb5;
+  --breach: #ff3b3b;
+  --secure: #00c896;
+  --warn: #f4a261;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--ink);color:#e8edf5;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:1000;opacity:0.6}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.2rem 3rem;background:rgba(10,13,20,0.88);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.06)}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--signal)}
+.nav-brand span{color:rgba(255,255,255,0.35)}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--static);text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;transition:color 0.2s}
+.nav-links a:hover{color:var(--signal)}
+.nav-cta{font-family:'DM Mono',monospace;font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.55rem 1.3rem;background:var(--signal);color:var(--ink);border:none;cursor:pointer;font-weight:500;text-decoration:none;transition:background 0.2s}
+.nav-cta:hover{background:var(--signal-dim)}
+
+/* HERO */
+.hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 70% 50%,rgba(26,39,68,0.9) 0%,transparent 70%),radial-gradient(ellipse 40% 40% at 20% 80%,rgba(232,255,71,0.05) 0%,transparent 60%),linear-gradient(160deg,#0a0d14 0%,#0f1625 40%,#0a0d14 100%)}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:60px 60px;animation:gridDrift 20s linear infinite}
+@keyframes gridDrift{0%{transform:translateY(0)}100%{transform:translateY(60px)}}
+.pulse-ring{position:absolute;right:8%;top:50%;transform:translateY(-50%);width:500px;height:500px}
+.pulse-ring::before,.pulse-ring::after,.pulse-ring span{content:'';position:absolute;inset:0;border-radius:50%;border:1px solid rgba(232,255,71,0.12);animation:pulseExpand 3s ease-out infinite}
+.pulse-ring span{display:block;inset:-80px;animation-delay:1s;border-color:rgba(232,255,71,0.06)}
+.pulse-ring::after{inset:-160px;animation-delay:2s;border-color:rgba(232,255,71,0.03)}
+@keyframes pulseExpand{0%{transform:scale(0.8);opacity:0}30%{opacity:1}100%{transform:scale(1.1);opacity:0}}
+.threat-map{position:absolute;right:5%;top:50%;transform:translateY(-50%);width:500px;height:500px;opacity:0.7}
+.threat-dot{position:absolute;width:6px;height:6px;border-radius:50%;background:var(--breach);box-shadow:0 0 10px var(--breach);animation:dotPulse 2s ease-in-out infinite}
+.threat-dot.secure{background:var(--secure);box-shadow:0 0 10px var(--secure)}
+.threat-dot.warn{background:var(--signal);box-shadow:0 0 10px var(--signal)}
+@keyframes dotPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.35;transform:scale(0.6)}}
+.hero-content{position:relative;z-index:10;display:flex;flex-direction:column;justify-content:center;padding:10rem 3rem 5rem 5rem}
+.report-badge{display:inline-flex;align-items:center;gap:0.7rem;margin-bottom:2.5rem;width:fit-content}
+.badge-year{font-family:'DM Mono',monospace;font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--signal);background:rgba(232,255,71,0.1);border:1px solid rgba(232,255,71,0.3);padding:0.35rem 0.8rem}
+.badge-edition{font-family:'DM Mono',monospace;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--static)}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.8rem,5vw,4.2rem);font-weight:800;line-height:1.05;letter-spacing:-0.02em;margin-bottom:0.4rem}
+.hero h1 .accent{color:var(--signal)}
+.hero-sub{font-family:'Syne',sans-serif;font-size:clamp(1rem,1.8vw,1.3rem);font-weight:600;color:var(--static);margin-bottom:1.5rem}
+.hero-desc{font-size:0.95rem;line-height:1.75;color:rgba(232,237,245,0.6);max-width:480px;margin-bottom:2.5rem}
+.hero-actions{display:flex;gap:1rem;align-items:center;flex-wrap:wrap}
+.btn-primary{font-family:'DM Mono',monospace;font-size:0.78rem;letter-spacing:0.1em;text-transform:uppercase;padding:1rem 2rem;background:var(--signal);color:var(--ink);border:none;cursor:pointer;font-weight:500;display:inline-flex;align-items:center;gap:0.6rem;text-decoration:none;transition:all 0.2s}
+.btn-primary:hover{background:var(--signal-dim);transform:translateY(-1px)}
+.btn-secondary{font-family:'DM Mono',monospace;font-size:0.78rem;letter-spacing:0.1em;text-transform:uppercase;padding:1rem 2rem;background:transparent;color:rgba(232,237,245,0.7);border:1px solid rgba(255,255,255,0.15);cursor:pointer;text-decoration:none;transition:all 0.2s}
+.btn-secondary:hover{border-color:var(--signal);color:var(--signal)}
+.authority-bar{display:flex;gap:2.5rem;margin-top:3.5rem;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.08);flex-wrap:wrap}
+.auth-item{display:flex;flex-direction:column;gap:0.2rem}
+.auth-number{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;color:var(--signal);line-height:1}
+.auth-label{font-family:'DM Mono',monospace;font-size:0.63rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--static)}
+
+/* CREDIBILITY STRIP */
+.credibility{background:var(--wire);border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06);padding:1.6rem 5rem;display:flex;align-items:center;gap:4rem;overflow-x:auto}
+.cred-label{font-family:'DM Mono',monospace;font-size:0.63rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--static);white-space:nowrap;flex-shrink:0}
+.cred-divider{width:1px;height:30px;background:rgba(255,255,255,0.1);flex-shrink:0}
+.cred-sources{display:flex;gap:3rem;align-items:center}
+.cred-source{font-family:'DM Mono',monospace;font-size:0.7rem;color:rgba(232,237,245,0.5);white-space:nowrap;letter-spacing:0.06em}
+.cred-source strong{color:rgba(232,237,245,0.9);font-weight:500}
+
+/* SHARED */
+.section-eyebrow{font-family:'DM Mono',monospace;font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--signal);margin-bottom:0.9rem}
+.section-title{font-family:'Syne',sans-serif;font-size:clamp(1.9rem,3.5vw,2.7rem);font-weight:700;line-height:1.1;max-width:580px}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity 0.7s ease,transform 0.7s ease}
+.reveal.visible{opacity:1;transform:none}
+
+/* STATS SECTION */
+.stats-section{padding:6rem 5rem;position:relative}
+.section-header{margin-bottom:3.5rem}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.06);margin-bottom:1px}
+.stat-card{background:#0d1120;padding:2.5rem 2rem;position:relative;overflow:hidden;transition:background 0.3s}
+.stat-card:hover{background:#101624}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--signal);transform:scaleX(0);transform-origin:left;transition:transform 0.4s ease}
+.stat-card:hover::before{transform:scaleX(1)}
+.stat-icon{font-size:1.3rem;margin-bottom:1.1rem;display:block}
+.stat-number{font-family:'Syne',sans-serif;font-size:2.8rem;font-weight:800;line-height:1;color:var(--signal);margin-bottom:0.5rem;letter-spacing:-0.03em}
+.stat-desc{font-size:0.85rem;line-height:1.6;color:rgba(232,237,245,0.55)}
+.stat-tag{display:inline-block;margin-top:0.9rem;font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.2rem 0.6rem;background:rgba(255,59,59,0.12);color:var(--breach);border:1px solid rgba(255,59,59,0.2)}
+.stat-tag.warn{background:rgba(232,255,71,0.08);color:var(--signal);border-color:rgba(232,255,71,0.2)}
+.stat-tag.up{background:rgba(0,200,150,0.1);color:var(--secure);border-color:rgba(0,200,150,0.2)}
+
+/* SCAN PROGRESS SECTION */
+.scan-section{padding:5rem 5rem;background:#0d1120;position:relative}
+.scan-section::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(232,255,71,0.25),transparent)}
+.scan-layout{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;margin-top:3rem}
+.scan-funnel{display:flex;flex-direction:column;gap:0}
+.funnel-step{display:flex;align-items:center;gap:1.5rem;padding:1.2rem 1.5rem;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);margin-bottom:2px;position:relative}
+.funnel-step::after{content:'▼';position:absolute;bottom:-16px;left:50%;transform:translateX(-50%);font-size:0.7rem;color:rgba(232,255,71,0.3)}
+.funnel-step:last-child::after{display:none}
+.funnel-num{font-family:'Syne',sans-serif;font-size:2.2rem;font-weight:800;color:var(--signal);line-height:1;min-width:110px}
+.funnel-label{font-size:0.9rem;color:rgba(232,237,245,0.7);line-height:1.4}
+.funnel-label strong{display:block;color:#e8edf5;font-weight:600;margin-bottom:0.15rem}
+.funnel-step.active{border-color:rgba(232,255,71,0.25);background:rgba(232,255,71,0.03)}
+.funnel-step.pending{border-color:rgba(244,162,97,0.2);background:rgba(244,162,97,0.02)}
+.funnel-step.pending .funnel-num{color:var(--warn)}
+.scan-details{}
+.progress-block{margin-bottom:2.5rem}
+.progress-block-title{font-family:'DM Mono',monospace;font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--static);margin-bottom:1rem}
+.progress-bar-wrap{margin-bottom:0.6rem}
+.pbar-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.4rem;font-size:0.83rem;color:rgba(232,237,245,0.75)}
+.pbar-pct{font-family:'DM Mono',monospace;font-size:0.78rem;color:var(--signal)}
+.pbar-track{height:5px;background:rgba(255,255,255,0.07);overflow:hidden}
+.pbar-fill{height:100%;transition:width 1.5s cubic-bezier(0.25,1,0.5,1);width:0}
+.pbar-fill.loaded{width:var(--w)}
+.pbar-fill.teal{background:linear-gradient(90deg,var(--secure),#00a87a)}
+.pbar-fill.yellow{background:linear-gradient(90deg,var(--signal),var(--signal-dim))}
+.pbar-fill.warn{background:linear-gradient(90deg,var(--warn),#e67e22)}
+.issue-list{margin-top:1rem}
+.issue-item{display:flex;gap:0.8rem;align-items:flex-start;padding:0.7rem 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:0.83rem;color:rgba(232,237,245,0.65);line-height:1.5}
+.issue-item:last-child{border:none}
+.issue-dot{width:6px;height:6px;border-radius:50%;background:var(--breach);flex-shrink:0;margin-top:0.35rem}
+.issue-dot.warn{background:var(--warn)}
+.issue-dot.ok{background:var(--secure)}
+
+/* KEY FINDINGS — VULNERABILITY DATA */
+.vuln-section{padding:6rem 5rem;background:var(--ink)}
+.vuln-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;margin-top:3.5rem}
+.vuln-card{border:1px solid rgba(255,255,255,0.07);padding:2rem 2rem;background:rgba(255,255,255,0.02);transition:all 0.3s}
+.vuln-card:hover{border-color:rgba(232,255,71,0.2);background:rgba(232,255,71,0.03);transform:translateY(-3px)}
+.vuln-card-tag{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--signal);margin-bottom:0.8rem;display:flex;align-items:center;gap:0.5rem}
+.vuln-card-tag::before{content:'';display:inline-block;width:14px;height:1px;background:var(--signal)}
+.vuln-card h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:0.6rem;line-height:1.3}
+.vuln-big-num{font-family:'Syne',sans-serif;font-size:3.5rem;font-weight:800;color:var(--breach);line-height:1;margin-bottom:0.4rem;letter-spacing:-0.03em}
+.vuln-big-num.warn{color:var(--warn)}
+.vuln-big-num.sig{color:var(--signal)}
+.vuln-big-num.sec{color:var(--secure)}
+.vuln-card p{font-size:0.83rem;line-height:1.65;color:rgba(232,237,245,0.55)}
+.vuln-bars{margin-top:1.5rem}
+.vbar-row{display:flex;align-items:center;gap:1rem;margin-bottom:0.75rem}
+.vbar-name{font-size:0.8rem;color:rgba(232,237,245,0.7);min-width:155px;flex-shrink:0}
+.vbar-track{flex:1;height:5px;background:rgba(255,255,255,0.07);overflow:hidden}
+.vbar-fill{height:100%;background:linear-gradient(90deg,var(--signal),var(--signal-dim));transition:width 1.5s cubic-bezier(0.25,1,0.5,1);width:0}
+.vbar-fill.loaded{width:var(--w)}
+.vbar-fill.breach{background:linear-gradient(90deg,var(--breach),#cc1111)}
+.vbar-fill.warn{background:linear-gradient(90deg,var(--warn),#e67e22)}
+.vbar-fill.sec{background:linear-gradient(90deg,var(--secure),#008f6d)}
+.vbar-pct{font-family:'DM Mono',monospace;font-size:0.75rem;color:var(--static);min-width:36px;text-align:right}
+
+/* THREAT SECTION */
+.threat-section{padding:6rem 5rem;background:#0d1120;position:relative}
+.threat-section::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(232,255,71,0.25),transparent)}
+.threat-layout{display:grid;grid-template-columns:1.2fr 1fr;gap:5rem;align-items:start}
+.threat-bars{margin-top:2.5rem}
+.threat-bar-item{margin-bottom:1.7rem}
+.threat-bar-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem}
+.threat-bar-name{font-size:0.85rem;color:rgba(232,237,245,0.8)}
+.threat-bar-pct{font-family:'DM Mono',monospace;font-size:0.8rem;color:var(--signal);font-weight:500}
+.threat-bar-track{height:5px;background:rgba(255,255,255,0.07);position:relative;overflow:hidden}
+.threat-bar-fill{height:100%;background:linear-gradient(90deg,var(--signal),var(--signal-dim));transition:width 1.5s cubic-bezier(0.25,1,0.5,1);width:0}
+.threat-bar-fill.loaded{width:var(--w)}
+.threat-bar-fill.breach{background:linear-gradient(90deg,var(--breach),#cc1111)}
+.threat-bar-fill.warn{background:linear-gradient(90deg,var(--warn),#e67e22)}
+.subcat-panel{}
+.subcat-card{border:1px solid rgba(255,255,255,0.07);padding:1.4rem 1.6rem;margin-bottom:0.7rem;display:flex;align-items:center;gap:1.1rem;cursor:pointer;transition:all 0.25s;position:relative;overflow:hidden;text-decoration:none;color:inherit;background:rgba(255,255,255,0.01)}
+.subcat-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--signal);transform:scaleY(0);transition:transform 0.25s}
+.subcat-card:hover{background:rgba(232,255,71,0.04);border-color:rgba(232,255,71,0.2);transform:translateX(4px)}
+.subcat-card:hover::before{transform:scaleY(1)}
+.subcat-icon{font-size:1.5rem;flex-shrink:0;width:42px;text-align:center}
+.subcat-info{flex:1}
+.subcat-name{font-family:'Syne',sans-serif;font-size:0.92rem;font-weight:600;margin-bottom:0.15rem}
+.subcat-desc{font-size:0.75rem;color:var(--static);line-height:1.4}
+.subcat-arrow{font-family:'DM Mono',monospace;font-size:0.68rem;color:var(--signal);opacity:0;transition:opacity 0.2s;white-space:nowrap;letter-spacing:0.05em}
+.subcat-card:hover .subcat-arrow{opacity:1}
+
+/* PROFILING SECTION */
+.profile-section{padding:6rem 5rem;background:var(--ink)}
+.profile-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.06);margin-top:3.5rem}
+.profile-cell{background:#0a0d14;padding:2rem 1.8rem}
+.profile-cell-header{font-family:'DM Mono',monospace;font-size:0.63rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--signal);margin-bottom:0.8rem;padding-bottom:0.7rem;border-bottom:1px solid rgba(232,255,71,0.12)}
+.profile-cell h3{font-family:'Syne',sans-serif;font-size:0.95rem;font-weight:700;margin-bottom:0.7rem}
+.profile-stat{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:var(--signal);line-height:1;margin-bottom:0.3rem}
+.profile-sub{font-size:0.78rem;color:var(--static);line-height:1.5;margin-bottom:1rem}
+.bar-mini{margin-top:0.5rem}
+.bar-mini-row{display:flex;align-items:center;gap:0.7rem;margin-bottom:0.4rem}
+.bar-mini-label{font-size:0.72rem;color:rgba(232,237,245,0.55);min-width:80px;flex-shrink:0}
+.bar-mini-track{flex:1;height:3px;background:rgba(255,255,255,0.06);overflow:hidden}
+.bar-mini-fill{height:100%;background:var(--signal);opacity:0.7}
+.bar-mini-val{font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--static);min-width:28px;text-align:right}
+
+/* EMAIL SECURITY */
+.email-section{padding:6rem 5rem;background:#0d1120;position:relative}
+.email-section::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,59,59,0.3),transparent)}
+.email-layout{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;margin-top:3.5rem}
+.donut-wrap{position:relative;width:220px;height:220px;margin:0 auto}
+.donut-wrap svg{transform:rotate(-90deg)}
+.donut-label{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.donut-big{font-family:'Syne',sans-serif;font-size:2.4rem;font-weight:800;color:var(--breach);line-height:1}
+.donut-sub{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--static);margin-top:0.2rem}
+.email-findings{}
+.finding-block{padding:1.2rem 0;border-bottom:1px solid rgba(255,255,255,0.06)}
+.finding-block:last-child{border:none}
+.finding-headline{font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;margin-bottom:0.35rem;display:flex;align-items:center;gap:0.7rem}
+.finding-badge{font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.2rem 0.5rem;background:rgba(255,59,59,0.12);color:var(--breach);border:1px solid rgba(255,59,59,0.2)}
+.finding-badge.warn{background:rgba(244,162,97,0.12);color:var(--warn);border-color:rgba(244,162,97,0.2)}
+.finding-body{font-size:0.83rem;line-height:1.65;color:rgba(232,237,245,0.55)}
+
+/* METHODOLOGY */
+.method-section{padding:6rem 5rem;background:var(--wire);display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center}
+.method-desc{font-size:0.93rem;line-height:1.8;color:rgba(232,237,245,0.6);margin-top:1.4rem;margin-bottom:2.5rem}
+.method-steps{display:flex;flex-direction:column;gap:0}
+.method-step{display:flex;gap:1.5rem;align-items:flex-start;padding:1.4rem 0;border-bottom:1px solid rgba(255,255,255,0.06)}
+.step-num{font-family:'DM Mono',monospace;font-size:0.68rem;color:var(--signal);letter-spacing:0.1em;margin-top:0.15rem;flex-shrink:0;width:26px}
+.step-content h4{font-family:'Syne',sans-serif;font-size:0.93rem;font-weight:600;margin-bottom:0.25rem}
+.step-content p{font-size:0.8rem;line-height:1.6;color:rgba(232,237,245,0.5)}
+
+/* DOWNLOAD / CTA */
+.download-section{padding:6rem 5rem;background:linear-gradient(180deg,#0a0d14 0%,#0d1525 100%)}
+.download-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3.5rem}
+.download-card{border:1px solid rgba(255,255,255,0.07);padding:2.3rem 1.8rem;position:relative;overflow:hidden;background:rgba(255,255,255,0.02);transition:all 0.3s}
+.download-card.featured{border-color:rgba(232,255,71,0.25);background:rgba(232,255,71,0.03)}
+.download-card:hover{transform:translateY(-4px);border-color:rgba(232,255,71,0.3);background:rgba(232,255,71,0.05);box-shadow:0 20px 60px rgba(0,0,0,0.4)}
+.download-card-tag{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--signal);margin-bottom:1.1rem;display:flex;align-items:center;gap:0.5rem}
+.download-card-tag::before{content:'';display:inline-block;width:16px;height:1px;background:var(--signal)}
+.download-card h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:0.7rem;line-height:1.3}
+.download-card p{font-size:0.8rem;line-height:1.65;color:rgba(232,237,245,0.5);margin-bottom:1.6rem}
+.download-card-meta{display:flex;gap:1.3rem;margin-bottom:1.6rem}
+.meta-item{font-family:'DM Mono',monospace;font-size:0.63rem;color:var(--static);letter-spacing:0.05em}
+.meta-item strong{display:block;color:rgba(232,237,245,0.7);font-size:0.78rem}
+.btn-download{font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.7rem 1.3rem;background:transparent;color:var(--signal);border:1px solid rgba(232,255,71,0.3);cursor:pointer;display:inline-flex;align-items:center;gap:0.5rem;text-decoration:none;transition:all 0.2s;width:100%;justify-content:center}
+.btn-download:hover{background:var(--signal);color:var(--ink)}
+.featured-pill{position:absolute;top:1.1rem;right:1.1rem;font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;padding:0.22rem 0.55rem;background:var(--signal);color:var(--ink);font-weight:500}
+
+/* TELCO LOOKUP */
+.lookup-section{padding:6rem 5rem;background:var(--wire);position:relative;overflow:hidden}
+.lookup-section::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(232,255,71,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(232,255,71,0.025) 1px,transparent 1px);background-size:40px 40px}
+.lookup-inner{position:relative;z-index:2;max-width:680px;margin:0 auto;text-align:center}
+.lookup-inner .section-title{max-width:100%;margin-bottom:0.7rem}
+.lookup-desc{font-size:0.95rem;line-height:1.7;color:rgba(232,237,245,0.6);margin-bottom:2.5rem}
+.lookup-box{display:flex;gap:0;margin-bottom:1.5rem}
+.lookup-input{flex:1;font-family:'DM Mono',monospace;font-size:0.85rem;padding:1rem 1.4rem;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-right:none;color:#e8edf5;outline:none;transition:border-color 0.2s}
+.lookup-input::placeholder{color:var(--static)}
+.lookup-input:focus{border-color:rgba(232,255,71,0.4)}
+.lookup-btn{font-family:'DM Mono',monospace;font-size:0.78rem;letter-spacing:0.1em;text-transform:uppercase;padding:1rem 1.8rem;background:var(--signal);color:var(--ink);border:none;cursor:pointer;font-weight:500;white-space:nowrap;transition:background 0.2s}
+.lookup-btn:hover{background:var(--signal-dim)}
+.lookup-result{display:none;text-align:left;border:1px solid rgba(232,255,71,0.2);background:rgba(232,255,71,0.03);padding:1.5rem 1.8rem;margin-top:1rem}
+.lookup-result.visible{display:block}
+.lookup-result-name{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:0.3rem;color:var(--signal)}
+.lookup-result-meta{font-size:0.78rem;color:var(--static);margin-bottom:0.8rem;font-family:'DM Mono',monospace;letter-spacing:0.05em}
+.lookup-result-hint{font-size:0.82rem;color:rgba(232,237,245,0.5);line-height:1.5;margin-bottom:1rem}
+.lookup-cta-text{font-size:0.78rem;color:rgba(232,237,245,0.55);text-align:center;margin-top:0.8rem}
+
+/* CTA FOOTER */
+.cta-footer{padding:6rem 5rem;background:linear-gradient(135deg,#0f1625 0%,#1a2744 100%);position:relative;overflow:hidden;text-align:center}
+.cta-footer::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(232,255,71,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(232,255,71,0.03) 1px,transparent 1px);background-size:40px 40px}
+.cta-footer-content{position:relative;z-index:2;max-width:600px;margin:0 auto}
+.cta-footer h2{font-family:'Syne',sans-serif;font-size:clamp(1.9rem,4vw,2.8rem);font-weight:800;margin-bottom:1rem;line-height:1.1}
+.cta-footer p{font-size:0.95rem;color:rgba(232,237,245,0.6);margin-bottom:2.5rem;line-height:1.7}
+.footer-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+footer{background:#070a10;padding:2rem 5rem;display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(255,255,255,0.05);flex-wrap:wrap;gap:1rem}
+.footer-brand{font-family:'Syne',sans-serif;font-weight:800;font-size:0.83rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--signal)}
+.footer-links{display:flex;gap:2rem;list-style:none}
+.footer-links a{font-family:'DM Mono',monospace;font-size:0.63rem;color:var(--static);text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;transition:color 0.2s}
+.footer-links a:hover{color:var(--signal)}
+.footer-copy{font-family:'DM Mono',monospace;font-size:0.63rem;color:var(--static);letter-spacing:0.06em}
+
+/* RESPONSIVE */
+@media(max-width:1100px){
+  .hero{grid-template-columns:1fr}
+  .pulse-ring,.threat-map{display:none}
+  .threat-layout,.scan-layout,.vuln-grid,.email-layout,.method-section{grid-template-columns:1fr;gap:3rem}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .download-grid,.profile-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:700px){
+  nav{padding:1rem 1.5rem}
+  .nav-links{display:none}
+  .hero-content{padding:7rem 1.5rem 4rem}
+  .stats-section,.scan-section,.vuln-section,.threat-section,.profile-section,.email-section,.method-section,.download-section,.lookup-section,.cta-footer,footer{padding:4rem 1.5rem}
+  .credibility{padding:1.2rem 1.5rem}
+  .stats-grid,.download-grid,.profile-grid{grid-template-columns:1fr}
+  .lookup-box{flex-direction:column}
+  .lookup-input{border-right:1px solid rgba(255,255,255,0.1);border-bottom:none}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">TCIR<span> · 2026</span></div>
+  <ul class="nav-links">
+    <li><a href="#findings">Key Findings</a></li>
+    <li><a href="#scan">Data Coverage</a></li>
+    <li><a href="#threats">Threat Landscape</a></li>
+    <li><a href="#reports">Reports</a></li>
+    <li><a href="#lookup">Check Your Telco</a></li>
+  </ul>
+  <a href="#reports" class="nav-cta">Get Full Report ↓</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="pulse-ring"><span></span></div>
+  <div class="threat-map">
+    <div class="threat-dot" style="top:22%;left:32%"></div>
+    <div class="threat-dot" style="top:42%;left:62%"></div>
+    <div class="threat-dot secure" style="top:62%;left:26%"></div>
+    <div class="threat-dot warn" style="top:32%;left:72%"></div>
+    <div class="threat-dot" style="top:72%;left:56%"></div>
+    <div class="threat-dot" style="top:18%;left:52%"></div>
+    <div class="threat-dot secure" style="top:82%;left:42%"></div>
+    <div class="threat-dot warn" style="top:52%;left:82%"></div>
+    <div class="threat-dot" style="top:28%;left:18%"></div>
+    <div class="threat-dot" style="top:67%;left:72%"></div>
+    <div class="threat-dot secure" style="top:48%;left:38%"></div>
+    <div class="threat-dot warn" style="top:12%;left:64%"></div>
+  </div>
+
+  <div class="hero-content">
+    <div class="report-badge">
+      <span class="badge-year">2026 Edition</span>
+      <span class="badge-edition">Industry First Publication</span>
+    </div>
+    <h1>US Telco<br><span class="accent">Cybersecurity</span><br>Risk Report</h1>
+    <p class="hero-sub">The definitive risk posture analysis across American telecommunications</p>
+    <p class="hero-desc">
+      The most comprehensive empirical analysis of cybersecurity vulnerabilities, attack surfaces, and risk patterns across US telecommunications operators — from Tier 1 carriers to regional ISPs, VoIP providers, and rural telcos.
+    </p>
+    <div class="hero-actions">
+      <a href="#reports" class="btn-primary">↓ Download Full Report</a>
+      <a href="#findings" class="btn-secondary">Explore Key Findings</a>
+    </div>
+    <div class="authority-bar">
+      <div class="auth-item">
+        <span class="auth-number">5,048</span>
+        <span class="auth-label">Telcos Analyzed</span>
+      </div>
+      <div class="auth-item">
+        <span class="auth-number">3,204</span>
+        <span class="auth-label">Domains Scanned</span>
+      </div>
+      <div class="auth-item">
+        <span class="auth-number">1,000+</span>
+        <span class="auth-label">Unique CVEs Found</span>
+      </div>
+      <div class="auth-item">
+        <span class="auth-number">18</span>
+        <span class="auth-label">Service Type Segments</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CREDIBILITY STRIP -->
+<div class="credibility">
+  <span class="cred-label">Data sources</span>
+  <div class="cred-divider"></div>
+  <div class="cred-sources">
+    <span class="cred-source"><strong>FCC Carrier Registry</strong> · Official Registrations</span>
+    <span class="cred-source"><strong>Attack Surface Scans</strong> · Domain-Level Analysis</span>
+    <span class="cred-source"><strong>CISA KEV Catalog</strong> · Known Exploited CVEs</span>
+    <span class="cred-source"><strong>NIST NVD</strong> · CVE Corpus &amp; CVSS Scoring</span>
+    <span class="cred-source"><strong>Business Intelligence</strong> · jeeva.ai · Public Records</span>
+  </div>
+</div>
+
+<!-- KEY FINDINGS — HEADLINE STATS -->
+<section class="stats-section" id="findings">
+  <div class="section-header reveal">
+    <p class="section-eyebrow">Key Findings · 2026</p>
+    <h2 class="section-title">The numbers exposing telco cyber risk</h2>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card reveal">
+      <span class="stat-icon">🔓</span>
+      <div class="stat-number">80%</div>
+      <p class="stat-desc">of telcos are critically exposed due to missing or non-enforcing DMARC records — making them prime targets for domain spoofing and phishing campaigns against their customers</p>
+      <span class="stat-tag">Critical: Email Security</span>
+    </div>
+    <div class="stat-card reveal">
+      <span class="stat-icon">⚠️</span>
+      <div class="stat-number">60%</div>
+      <p class="stat-desc">of all identified vulnerabilities carry a CVSS score above 7.0 — classified as High or Critical severity — with weaponized exploit kits already available for many of these CVEs</p>
+      <span class="stat-tag">CVSS &gt; 7.0</span>
+    </div>
+    <div class="stat-card reveal">
+      <span class="stat-icon">🛰️</span>
+      <div class="stat-number">85–90%</div>
+      <p class="stat-desc">of telco infrastructure exposes Web Services ports 80/443 — the single most pervasive attack surface across the entire dataset, accounting for the majority of high-risk findings</p>
+      <span class="stat-tag warn">Port Exposure</span>
+    </div>
+    <div class="stat-card reveal">
+      <span class="stat-icon">🔑</span>
+      <div class="stat-number">40%</div>
+      <p class="stat-desc">of telco networks expose SSH (Port 22) to the public internet — leaving them vulnerable to brute-force attacks and exploitation of critical flaws such as the Terrapin vulnerability</p>
+      <span class="stat-tag">SSH Exposure</span>
+    </div>
+  </div>
+  <div class="stats-grid">
+    <div class="stat-card reveal">
+      <span class="stat-icon">📧</span>
+      <div class="stat-number">60%</div>
+      <p class="stat-desc">of telcos expose email server ports (25, 110, 143, 587) — creating a massive footprint for phishing relay attacks, email server exploits, and credential harvesting operations</p>
+      <span class="stat-tag">Email Port Risk</span>
+    </div>
+    <div class="stat-card reveal">
+      <span class="stat-icon">🌐</span>
+      <div class="stat-number">1,000+</div>
+      <p class="stat-desc">unique CVEs identified across the 3,204 scanned telcos. A majority of high-severity CVEs have EPSS scores above 0.5 — indicating active exploitation in the wild</p>
+      <span class="stat-tag warn">Active Exploitation</span>
+    </div>
+    <div class="stat-card reveal">
+      <span class="stat-icon">🏗️</span>
+      <div class="stat-number">70%</div>
+      <p class="stat-desc">of dangling DNS CNAME records point to abandoned Microsoft Azure or AWS cloud services — creating subdomain takeover opportunities attackers can exploit to impersonate telcos</p>
+      <span class="stat-tag">DNS Takeover Risk</span>
+    </div>
+    <div class="stat-card reveal">
+      <span class="stat-icon">🚨</span>
+      <div class="stat-number">53%</div>
+      <p class="stat-desc">of the most severe threats involve some form of Denial of Service — and when filtered to ransomware-linked CVEs, Remote Execution dominates at 91.7%, enabling full system compromise</p>
+      <span class="stat-tag warn">DoS + RCE Dominant</span>
+    </div>
+  </div>
+</section>
+
+<!-- SCAN COVERAGE / DATA -->
+<section class="scan-section" id="scan">
+  <div class="section-header reveal">
+    <p class="section-eyebrow">Data Coverage</p>
+    <h2 class="section-title">How we built the dataset — from FCC registry to attack surface</h2>
+  </div>
+  <div class="scan-layout">
+    <div class="scan-funnel reveal">
+      <div class="funnel-step">
+        <div class="funnel-num">7,321</div>
+        <div class="funnel-label"><strong>FCC Registered Carriers</strong>All registered telcos across 18 principal communication types, sourced directly from the FCC official carrier registry</div>
+      </div>
+      <div class="funnel-step">
+        <div class="funnel-num">5,048</div>
+        <div class="funnel-label"><strong>Active Working List</strong>After removing closed operators and deduplicating FRNs — our clean working universe for analysis</div>
+      </div>
+      <div class="funnel-step active">
+        <div class="funnel-num">3,204</div>
+        <div class="funnel-label"><strong>Successfully Scanned ✓</strong>Full attack surface scan complete — open ports, CVEs, DNS records, email security posture, subdomain mapping</div>
+      </div>
+      <div class="funnel-step pending">
+        <div class="funnel-num">1,844</div>
+        <div class="funnel-label"><strong>Scan In Progress</strong>Extended scan duration underway — timed-out domains being rerun. Expect full coverage in next release</div>
+      </div>
+    </div>
+    <div class="scan-details reveal">
+      <div class="progress-block">
+        <div class="progress-block-title">Scan completion by segment</div>
+        <div class="progress-bar-wrap">
+          <div class="pbar-label"><span>Interconnected VoIP (1,567 telcos)</span><span class="pbar-pct">63%</span></div>
+          <div class="pbar-track"><div class="pbar-fill yellow" style="--w:63%"></div></div>
+        </div>
+        <div class="progress-bar-wrap">
+          <div class="pbar-label"><span>Incumbent LEC (700 telcos)</span><span class="pbar-pct">71%</span></div>
+          <div class="pbar-track"><div class="pbar-fill teal" style="--w:71%"></div></div>
+        </div>
+        <div class="progress-bar-wrap">
+          <div class="pbar-label"><span>CAP/LEC (378 telcos)</span><span class="pbar-pct">68%</span></div>
+          <div class="pbar-track"><div class="pbar-fill teal" style="--w:68%"></div></div>
+        </div>
+        <div class="progress-bar-wrap">
+          <div class="pbar-label"><span>Cellular/PCS/SMR (131 telcos)</span><span class="pbar-pct">74%</span></div>
+          <div class="pbar-track"><div class="pbar-fill teal" style="--w:74%"></div></div>
+        </div>
+        <div class="progress-bar-wrap">
+          <div class="pbar-label"><span>Private Service Providers (222)</span><span class="pbar-pct">56%</span></div>
+          <div class="pbar-track"><div class="pbar-fill warn" style="--w:56%"></div></div>
+        </div>
+      </div>
+      <div class="progress-block">
+        <div class="progress-block-title">Scan issues &amp; resolution status</div>
+        <div class="issue-list">
+          <div class="issue-item"><div class="issue-dot"></div>Some domains inactive — acquired or rebranded companies with expired URLs. Scanning alternate domains where available.</div>
+          <div class="issue-item"><div class="issue-dot warn"></div>Scan timeouts on complex subdomains — re-running with extended allowed scan duration. Confident all will resolve.</div>
+          <div class="issue-item"><div class="issue-dot ok"></div>Subdomain analysis complete for 4,485 reachable domains — average of 10–14 subdomains per active telco.</div>
+          <div class="issue-item"><div class="issue-dot ok"></div>45–50% of scanned bases revealed real subdomains (mail, sip, portal, autodiscover etc.) beyond the primary domain.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VULNERABILITY DEEP DIVE -->
+<section class="vuln-section">
+  <div class="section-header reveal">
+    <p class="section-eyebrow">Vulnerability Analysis</p>
+    <h2 class="section-title">Attack surface findings across 3,204 US telcos</h2>
+  </div>
+  <div class="vuln-grid">
+    <div class="vuln-card reveal">
+      <div class="vuln-card-tag">Port Exposure</div>
+      <h3>Commonly Exposed Ports</h3>
+      <div class="vuln-bars">
+        <div class="vbar-row"><span class="vbar-name">HTTP (Port 80)</span><div class="vbar-track"><div class="vbar-fill breach" style="--w:88%"></div></div><span class="vbar-pct">88%</span></div>
+        <div class="vbar-row"><span class="vbar-name">HTTPS (Port 443)</span><div class="vbar-track"><div class="vbar-fill breach" style="--w:85%"></div></div><span class="vbar-pct">85%</span></div>
+        <div class="vbar-row"><span class="vbar-name">Email Ports (SMTP/IMAP/POP3)</span><div class="vbar-track"><div class="vbar-fill warn" style="--w:60%"></div></div><span class="vbar-pct">60%</span></div>
+        <div class="vbar-row"><span class="vbar-name">SSH (Port 22)</span><div class="vbar-track"><div class="vbar-fill warn" style="--w:40%"></div></div><span class="vbar-pct">40%</span></div>
+        <div class="vbar-row"><span class="vbar-name">Admin Alt (8080/8443)</span><div class="vbar-track"><div class="vbar-fill" style="--w:24%"></div></div><span class="vbar-pct">24%</span></div>
+        <div class="vbar-row"><span class="vbar-name">Database/Other (3306/123)</span><div class="vbar-track"><div class="vbar-fill" style="--w:19%"></div></div><span class="vbar-pct">19%</span></div>
+      </div>
+    </div>
+    <div class="vuln-card reveal">
+      <div class="vuln-card-tag">CVE Severity</div>
+      <h3>Vulnerability Severity Profile</h3>
+      <div class="vuln-big-num">60%</div>
+      <p>of 1,000+ unique CVEs identified carry a CVSS score above 7.0 — classified as <strong>High or Critical</strong>. A majority also have EPSS scores above 0.5, indicating weaponized exploit kits are actively available and deployed against telecom targets.</p>
+      <div class="vuln-bars" style="margin-top:1.2rem">
+        <div class="vbar-row"><span class="vbar-name">High/Critical (CVSS &gt;7.0)</span><div class="vbar-track"><div class="vbar-fill breach" style="--w:60%"></div></div><span class="vbar-pct">60%</span></div>
+        <div class="vbar-row"><span class="vbar-name">Medium/Low (CVSS ≤7.0)</span><div class="vbar-track"><div class="vbar-fill" style="--w:40%"></div></div><span class="vbar-pct">40%</span></div>
+        <div class="vbar-row"><span class="vbar-name">EPSS &gt;0.5 (exploit available)</span><div class="vbar-track"><div class="vbar-fill warn" style="--w:51%"></div></div><span class="vbar-pct">&gt;50%</span></div>
+      </div>
+    </div>
+    <div class="vuln-card reveal">
+      <div class="vuln-card-tag">Vulnerability Categories</div>
+      <h3>Top Vulnerability Categories</h3>
+      <div class="vuln-bars">
+        <div class="vbar-row"><span class="vbar-name">Web Servers &amp; CMS</span><div class="vbar-track"><div class="vbar-fill breach" style="--w:100%"></div></div><span class="vbar-pct">30%</span></div>
+        <div class="vbar-row"><span class="vbar-name">Cryptographic Libraries</span><div class="vbar-track"><div class="vbar-fill warn" style="--w:83%"></div></div><span class="vbar-pct">25%</span></div>
+        <div class="vbar-row"><span class="vbar-name">Other/Misc (Kernel/OS)</span><div class="vbar-track"><div class="vbar-fill warn" style="--w:67%"></div></div><span class="vbar-pct">20%</span></div>
+        <div class="vbar-row"><span class="vbar-name">Remote Access/SSH</span><div class="vbar-track"><div class="vbar-fill" style="--w:50%"></div></div><span class="vbar-pct">15%</span></div>
+        <div class="vbar-row"><span class="vbar-name">Email Servers</span><div class="vbar-track"><div class="vbar-fill sec" style="--w:33%"></div></div><span class="vbar-pct">10%</span></div>
+      </div>
+      <p style="font-size:0.78rem;color:rgba(232,237,245,0.45);margin-top:0.8rem">Primary drivers: outdated Nginx/Apache versions, unpatched OpenSSL libraries. Ransomware entry points: Remote Access (15%) and Email Servers (10%).</p>
+    </div>
+    <div class="vuln-card reveal">
+      <div class="vuln-card-tag">Dangling DNS Risk</div>
+      <h3>Subdomain Takeover via Dangling CNAMEs</h3>
+      <div class="vuln-big-num warn" style="font-size:2.8rem">70%</div>
+      <p style="margin-bottom:1rem">of dangling CNAME records point to abandoned <strong>Microsoft Azure (40%)</strong> or <strong>AWS (30%)</strong> services. An attacker can claim the abandoned cloud resource to hijack a legitimate telco subdomain — enabling convincing phishing portals and malware distribution that bypass spam filters.</p>
+      <div class="vuln-bars">
+        <div class="vbar-row"><span class="vbar-name">Microsoft Azure/O365</span><div class="vbar-track"><div class="vbar-fill breach" style="--w:100%"></div></div><span class="vbar-pct">40%</span></div>
+        <div class="vbar-row"><span class="vbar-name">AWS CloudFront/S3</span><div class="vbar-track"><div class="vbar-fill warn" style="--w:75%"></div></div><span class="vbar-pct">30%</span></div>
+        <div class="vbar-row"><span class="vbar-name">Shopify/Wix/Squarespace</span><div class="vbar-track"><div class="vbar-fill" style="--w:37%"></div></div><span class="vbar-pct">15%</span></div>
+        <div class="vbar-row"><span class="vbar-name">GitHub Pages</span><div class="vbar-track"><div class="vbar-fill sec" style="--w:25%"></div></div><span class="vbar-pct">10%</span></div>
+        <div class="vbar-row"><span class="vbar-name">Other</span><div class="vbar-track"><div class="vbar-fill sec" style="--w:12%"></div></div><span class="vbar-pct">5%</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THREAT LANDSCAPE -->
+<section class="threat-section" id="threats">
+  <div class="threat-layout">
+    <div>
+      <div class="section-header reveal">
+        <p class="section-eyebrow">Threat Landscape</p>
+        <h2 class="section-title">Severe threat distribution across telco attack surfaces</h2>
+      </div>
+      <div class="threat-bars reveal">
+        <div class="threat-bar-item">
+          <div class="threat-bar-label"><span class="threat-bar-name">Denial of Service + Remote Execution</span><span class="threat-bar-pct">28.2%</span></div>
+          <div class="threat-bar-track"><div class="threat-bar-fill breach" style="--w:94%"></div></div>
+        </div>
+        <div class="threat-bar-item">
+          <div class="threat-bar-label"><span class="threat-bar-name">Denial of Service (standalone)</span><span class="threat-bar-pct">20.4%</span></div>
+          <div class="threat-bar-track"><div class="threat-bar-fill breach" style="--w:68%"></div></div>
+        </div>
+        <div class="threat-bar-item">
+          <div class="threat-bar-label"><span class="threat-bar-name">Other Threats</span><span class="threat-bar-pct">17.9%</span></div>
+          <div class="threat-bar-track"><div class="threat-bar-fill" style="--w:60%"></div></div>
+        </div>
+        <div class="threat-bar-item">
+          <div class="threat-bar-label"><span class="threat-bar-name">Remote Execution (standalone)</span><span class="threat-bar-pct">10.8%</span></div>
+          <div class="threat-bar-track"><div class="threat-bar-fill warn" style="--w:36%"></div></div>
+        </div>
+        <div class="threat-bar-item">
+          <div class="threat-bar-label"><span class="threat-bar-name">Cross-Site Scripting (XSS)</span><span class="threat-bar-pct">7.4%</span></div>
+          <div class="threat-bar-track"><div class="threat-bar-fill" style="--w:25%"></div></div>
+        </div>
+        <div class="threat-bar-item">
+          <div class="threat-bar-label"><span class="threat-bar-name">DoS + Information Gathering + RCE</span><span class="threat-bar-pct">4.9%</span></div>
+          <div class="threat-bar-track"><div class="threat-bar-fill" style="--w:16%"></div></div>
+        </div>
+        <div class="threat-bar-item">
+          <div class="threat-bar-label"><span class="threat-bar-name">DoS + Remote Execution + XSS</span><span class="threat-bar-pct">4.3%</span></div>
+          <div class="threat-bar-track"><div class="threat-bar-fill" style="--w:14%"></div></div>
+        </div>
+        <div class="threat-bar-item">
+          <div class="threat-bar-label"><span class="threat-bar-name">Privilege Escalation</span><span class="threat-bar-pct">3.2%</span></div>
+          <div class="threat-bar-track"><div class="threat-bar-fill warn" style="--w:11%"></div></div>
+        </div>
+      </div>
+      <p style="margin-top:1.5rem;font-size:0.8rem;color:rgba(232,237,245,0.45);font-family:'DM Mono',monospace;border-top:1px solid rgba(255,255,255,0.06);padding-top:1rem">Combined Denial of Service involvement: <strong style="color:var(--breach)">53.3%</strong> of all severe threats. In ransomware campaigns specifically: <strong style="color:var(--breach)">91.7%</strong> are Remote Execution.</p>
+    </div>
+
+    <div class="subcat-panel reveal">
+      <p class="section-eyebrow" style="margin-bottom:1.5rem">Telco Segments Covered</p>
+      <a class="subcat-card" href="#reports">
+        <span class="subcat-icon">📡</span>
+        <div class="subcat-info">
+          <div class="subcat-name">Interconnected VoIP</div>
+          <div class="subcat-desc">1,567 operators · Largest segment · Highest subdomain exposure</div>
+        </div>
+        <span class="subcat-arrow">→ Report</span>
+      </a>
+      <a class="subcat-card" href="#reports">
+        <span class="subcat-icon">🏢</span>
+        <div class="subcat-info">
+          <div class="subcat-name">Incumbent Local Exchange Carriers</div>
+          <div class="subcat-desc">700 operators · Legacy infrastructure risk · High CVSS concentration</div>
+        </div>
+        <span class="subcat-arrow">→ Report</span>
+      </a>
+      <a class="subcat-card" href="#reports">
+        <span class="subcat-icon">📶</span>
+        <div class="subcat-info">
+          <div class="subcat-name">Cellular / PCS / SMR</div>
+          <div class="subcat-desc">131 operators · Mobile network exposure · SIM-swap vectors</div>
+        </div>
+        <span class="subcat-arrow">→ Report</span>
+      </a>
+      <a class="subcat-card" href="#reports">
+        <span class="subcat-icon">🛰️</span>
+        <div class="subcat-info">
+          <div class="subcat-name">CAP / LEC &amp; Local Resellers</div>
+          <div class="subcat-desc">568 operators · Shared infrastructure risks · Reseller chain exposure</div>
+        </div>
+        <span class="subcat-arrow">→ Report</span>
+      </a>
+      <a class="subcat-card" href="#reports">
+        <span class="subcat-icon">🔒</span>
+        <div class="subcat-info">
+          <div class="subcat-name">Private Service Providers</div>
+          <div class="subcat-desc">222 operators · Often overlooked · High SSH &amp; admin port exposure</div>
+        </div>
+        <span class="subcat-arrow">→ Report</span>
+      </a>
+      <a class="subcat-card" href="#reports">
+        <span class="subcat-icon">📺</span>
+        <div class="subcat-info">
+          <div class="subcat-name">Cable TV / Satellite / Other</div>
+          <div class="subcat-desc">~200 operators · Converged network risk · OT/IT gap exposure</div>
+        </div>
+        <span class="subcat-arrow">→ Report</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- EMAIL SECURITY SECTION -->
+<section class="email-section">
+  <div class="section-header reveal">
+    <p class="section-eyebrow">Email Security Posture</p>
+    <h2 class="section-title">A critical and pervasive failure across the industry</h2>
+  </div>
+  <div class="email-layout">
+    <div class="reveal" style="display:flex;flex-direction:column;align-items:center;gap:2rem">
+      <div class="donut-wrap">
+        <svg width="220" height="220" viewBox="0 0 220 220">
+          <circle cx="110" cy="110" r="85" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="30"/>
+          <circle cx="110" cy="110" r="85" fill="none" stroke="var(--breach)" stroke-width="30" stroke-dasharray="427 534" stroke-dashoffset="0"/>
+          <circle cx="110" cy="110" r="85" fill="none" stroke="var(--secure)" stroke-width="30" stroke-dasharray="107 534" stroke-dashoffset="-427"/>
+        </svg>
+        <div class="donut-label">
+          <div class="donut-big">80%</div>
+          <div class="donut-sub">Exposed</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:2rem;font-family:'DM Mono',monospace;font-size:0.7rem">
+        <div style="display:flex;align-items:center;gap:0.5rem"><span style="width:10px;height:10px;border-radius:50%;background:var(--breach);display:inline-block"></span><span style="color:var(--static)">DMARC Missing/p=none (80%)</span></div>
+        <div style="display:flex;align-items:center;gap:0.5rem"><span style="width:10px;height:10px;border-radius:50%;background:var(--secure);display:inline-block"></span><span style="color:var(--static)">DMARC Secured (20%)</span></div>
+      </div>
+    </div>
+    <div class="email-findings reveal">
+      <div class="finding-block">
+        <div class="finding-headline">Critical DMARC Deficiency <span class="finding-badge">Critical</span></div>
+        <div class="finding-body">80% of telcos either completely lack a DMARC record or have a non-enforcing <code style="color:var(--signal);font-family:'DM Mono',monospace;font-size:0.8rem">p=none</code> policy — meaning emails can be spoofed with zero enforcement. Attackers can impersonate any of these telcos' domains to target their customers.</div>
+      </div>
+      <div class="finding-block">
+        <div class="finding-headline">Soft-Fail SPF Records <span class="finding-badge warn">High Risk</span></div>
+        <div class="finding-body">60% of telcos use a soft-fail SPF record (<code style="color:var(--signal);font-family:'DM Mono',monospace;font-size:0.8rem">~all</code>) which still allows unauthorized senders to pass email checks. Combined with the DMARC gap, this creates an open door for spear-phishing campaigns targeting downstream telco customers at scale.</div>
+      </div>
+      <div class="finding-block">
+        <div class="finding-headline">Business Impact</div>
+        <div class="finding-body">With 80% of telcos exposed, attackers can create convincing fake billing portals, network alerts, and customer service emails using legitimate telco domains — with high deliverability rates because the domain is trusted by spam filters and email clients.</div>
+      </div>
+      <div style="margin-top:1.5rem;padding:1rem 1.2rem;background:rgba(255,59,59,0.06);border:1px solid rgba(255,59,59,0.15);font-size:0.8rem;color:rgba(232,237,245,0.65);line-height:1.6">
+        <strong style="color:var(--breach);font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase">Risk to Telco Customers:</strong> Domain spoofing, identity theft, spear-phishing targeting consumer and business subscribers at scale.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BUSINESS PROFILING SECTION -->
+<section class="profile-section" id="data">
+  <div class="section-header reveal">
+    <p class="section-eyebrow">Telco Business Profiles</p>
+    <h2 class="section-title">3,536 telcos profiled — segmented for deep analysis</h2>
+  </div>
+  <div class="profile-grid">
+    <div class="profile-cell reveal">
+      <div class="profile-cell-header">Geographic Coverage</div>
+      <h3>Top States by Telco Count</h3>
+      <div class="profile-stat">50</div>
+      <div class="profile-sub">US states represented across the dataset. Highest concentration in TX, CA, FL, NY, and IA.</div>
+      <div class="bar-mini">
+        <div class="bar-mini-row"><span class="bar-mini-label">Texas (TX)</span><div class="bar-mini-track"><div class="bar-mini-fill" style="width:100%"></div></div><span class="bar-mini-val">322</span></div>
+        <div class="bar-mini-row"><span class="bar-mini-label">California (CA)</span><div class="bar-mini-track"><div class="bar-mini-fill" style="width:80%"></div></div><span class="bar-mini-val">259</span></div>
+        <div class="bar-mini-row"><span class="bar-mini-label">Florida (FL)</span><div class="bar-mini-track"><div class="bar-mini-fill" style="width:76%"></div></div><span class="bar-mini-val">244</span></div>
+        <div class="bar-mini-row"><span class="bar-mini-label">New York (NY)</span><div class="bar-mini-track"><div class="bar-mini-fill" style="width:53%"></div></div><span class="bar-mini-val">172</span></div>
+        <div class="bar-mini-row"><span class="bar-mini-label">Iowa (IA)</span><div class="bar-mini-track"><div class="bar-mini-fill" style="width:46%"></div></div><span class="bar-mini-val">149</span></div>
+        <div class="bar-mini-row"><span class="bar-mini-label">Illinois (IL)</span><div class="bar-mini-track"><div class="bar-mini-fill" style="width:43%"></div></div><span class="bar-mini-val">138</span></div>
+      </div>
+    </div>
+    <div class="profile-cell reveal">
+      <div class="profile-cell-header">Company Size Distribution</div>
+      <h3>Employee Size Breakdown</h3>
+      <div class="profile-stat">1–10</div>
+      <div class="profile-sub">Most prevalent company size — over 800 telcos in this bracket. The sector is dominated by small operators, which typically lack dedicated security teams.</div>
+      <div class="bar-mini">
+        <div class="bar-mini-row"><span class="bar-mini-label">1–10 employees</span><div class="bar-mini-track"><div class="bar-mini-fill" style="width:100%"></div></div><span class="bar-mini-val">~890</span></div>
+        <div class="bar-mini-row"><span class="bar-mini-label">11–50 employees</span><div class="bar-mini-track"><div class="bar-mini-fill" style="width:95%"></div></div><span class="bar-mini-val">~850</span></div>
+        <div class="bar-mini-row"><span class="bar-mini-label">51–200 employees</span><div class="bar-mini-track"><div class="bar-mini-fill" style="width:43%"></div></div><span class="bar-mini-val">~380</span></div>
+        <div class="bar-mini-row"><span class="bar-mini-label">201–500</span><div class="bar-mini-track"><div class="bar-mini-fill" style="width:10%"></div></div><span class="bar-mini-val">~70</span></div>
+        <div class="bar-mini-row"><span class="bar-mini-label">1,001–5,000</span><div class="bar-mini-track"><div class="bar-mini-fill" style="width:7%"></div></div><span class="bar-mini-val">~60</span></div>
+        <div class="bar-mini-row"><span class="bar-mini-label">10,001+</span><div class="bar-mini-track"><div class="bar-mini-fill" style="width:5%"></div></div><span class="bar-mini-val">~40</span></div>
+      </div>
+    </div>
+    <div class="profile-cell reveal">
+      <div class="profile-cell-header">Revenue Segmentation</div>
+      <h3>Annual Revenue Bands</h3>
+      <div class="profile-stat">$1–5M</div>
+      <div class="profile-sub">Most common revenue bracket with 1,000+ operators. Small revenue = small security budgets = higher vulnerability exposure per operator.</div>
+      <div class="bar-mini">
+        <div class="bar-mini-row"><span class="bar-mini-label">&lt;$1M</span><div class="bar-mini-track"><div class="bar-mini-fill" style="width:44%"></div></div><span class="bar-mini-val">~450</span></div>
+        <div class="bar-mini-row"><span class="bar-mini-label">$1M–$5M</span><div class="bar-mini-track"><div class="bar-mini-fill" style="width:100%"></div></div><span class="bar-mini-val">~1,100</span></div>
+        <div class="bar-mini-row"><span class="bar-mini-label">$5M–$50M</span><div class="bar-mini-track"><div class="bar-mini-fill" style="width:62%"></div></div><span class="bar-mini-val">~620</span></div>
+        <div class="bar-mini-row"><span class="bar-mini-label">$50M–$500M</span><div class="bar-mini-track"><div class="bar-mini-fill" style="width:16%"></div></div><span class="bar-mini-val">~160</span></div>
+        <div class="bar-mini-row"><span class="bar-mini-label">$500M–$1B</span><div class="bar-mini-track"><div class="bar-mini-fill" style="width:4%"></div></div><span class="bar-mini-val">~25</span></div>
+        <div class="bar-mini-row"><span class="bar-mini-label">$1B+</span><div class="bar-mini-track"><div class="bar-mini-fill" style="width:8%"></div></div><span class="bar-mini-val">~80</span></div>
+      </div>
+    </div>
+    <div class="profile-cell reveal">
+      <div class="profile-cell-header">Service Type Distribution</div>
+      <h3>Telcos by Principal Service</h3>
+      <div class="bar-mini" style="margin-top:0.5rem">
+        <div class="bar-mini-row"><span class="bar-mini-label">Interconnected VoIP</span><div class="bar-mini-track"><div class="bar-mini-fill" style="width:100%"></div></div><span class="bar-mini-val">1,567</span></div>
+        <div class="bar-mini-row"><span class="bar-mini-label">Incumbent LEC</span><div class="bar-mini-track"><div class="bar-mini-fill" style="width:45%"></div></div><span class="bar-mini-val">700</span></div>
+        <div class="bar-mini-row"><span class="bar-mini-label">CAP/LEC</span><div class="bar-mini-track"><div class="bar-mini-fill" style="width:24%"></div></div><span class="bar-mini-val">378</span></div>
+        <div class="bar-mini-row"><span class="bar-mini-label">Private Service Provider</span><div class="bar-mini-track"><div class="bar-mini-fill" style="width:14%"></div></div><span class="bar-mini-val">222</span></div>
+        <div class="bar-mini-row"><span class="bar-mini-label">Local Reseller</span><div class="bar-mini-track"><div class="bar-mini-fill" style="width:12%"></div></div><span class="bar-mini-val">190</span></div>
+        <div class="bar-mini-row"><span class="bar-mini-label">Cellular/PCS/SMR</span><div class="bar-mini-track"><div class="bar-mini-fill" style="width:8%"></div></div><span class="bar-mini-val">131</span></div>
+        <div class="bar-mini-row"><span class="bar-mini-label">All Others</span><div class="bar-mini-track"><div class="bar-mini-fill" style="width:11%"></div></div><span class="bar-mini-val">~180</span></div>
+      </div>
+    </div>
+    <div class="profile-cell reveal">
+      <div class="profile-cell-header">Data Collected Per Telco</div>
+      <h3>Business Profile Fields</h3>
+      <div class="profile-sub" style="margin-bottom:1rem">Each telco profile includes 15+ fields for segmented risk analysis:</div>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:0.35rem">
+        <li style="font-size:0.78rem;color:rgba(232,237,245,0.55);display:flex;gap:0.5rem"><span style="color:rgba(232,255,71,0.4);font-family:'DM Mono',monospace">—</span>Registered &amp; Operating Name</li>
+        <li style="font-size:0.78rem;color:rgba(232,237,245,0.55);display:flex;gap:0.5rem"><span style="color:rgba(232,255,71,0.4);font-family:'DM Mono',monospace">—</span>Office City &amp; State · Domain URL · FRN</li>
+        <li style="font-size:0.78rem;color:rgba(232,237,245,0.55);display:flex;gap:0.5rem"><span style="color:rgba(232,255,71,0.4);font-family:'DM Mono',monospace">—</span>Employee Size · Annual Revenue</li>
+        <li style="font-size:0.78rem;color:rgba(232,237,245,0.55);display:flex;gap:0.5rem"><span style="color:rgba(232,255,71,0.4);font-family:'DM Mono',monospace">—</span>Public/Private · Holding Company</li>
+        <li style="font-size:0.78rem;color:rgba(232,237,245,0.55);display:flex;gap:0.5rem"><span style="color:rgba(232,255,71,0.4);font-family:'DM Mono',monospace">—</span>CEO Name · Year Founded</li>
+        <li style="font-size:0.78rem;color:rgba(232,237,245,0.55);display:flex;gap:0.5rem"><span style="color:rgba(232,255,71,0.4);font-family:'DM Mono',monospace">—</span>Acquired Status · States of Operation</li>
+        <li style="font-size:0.78rem;color:rgba(232,237,245,0.55);display:flex;gap:0.5rem"><span style="color:rgba(232,255,71,0.4);font-family:'DM Mono',monospace">—</span>Principal Communication Type</li>
+      </ul>
+    </div>
+    <div class="profile-cell reveal">
+      <div class="profile-cell-header">Why This Segmentation Matters</div>
+      <h3>Segment-Level Risk Insights</h3>
+      <div class="profile-sub">The profiling data enables risk analysis by segment — for example:</div>
+      <div style="display:flex;flex-direction:column;gap:0.6rem;margin-top:0.6rem">
+        <div style="padding:0.7rem 0.8rem;background:rgba(232,255,71,0.04);border:1px solid rgba(232,255,71,0.1);font-size:0.78rem;color:rgba(232,237,245,0.65);line-height:1.5">📊 Telcos with &lt;$5M revenue show <strong style="color:var(--signal)">significantly higher</strong> critical port exposure rates</div>
+        <div style="padding:0.7rem 0.8rem;background:rgba(232,255,71,0.04);border:1px solid rgba(232,255,71,0.1);font-size:0.78rem;color:rgba(232,237,245,0.65);line-height:1.5">📅 Telcos founded before 1990 correlate with <strong style="color:var(--signal)">legacy system vulnerabilities</strong> and higher CVSS scores</div>
+        <div style="padding:0.7rem 0.8rem;background:rgba(232,255,71,0.04);border:1px solid rgba(232,255,71,0.1);font-size:0.78rem;color:rgba(232,237,245,0.65);line-height:1.5">📍 Certain states show <strong style="color:var(--signal)">clustered vulnerability patterns</strong> — available in full report</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- METHODOLOGY -->
+<section class="method-section" id="methodology">
+  <div class="reveal">
+    <p class="section-eyebrow">Methodology</p>
+    <h2 class="section-title">How this data was collected and validated</h2>
+    <p class="method-desc">This report is built on a rigorous 4-step data collection framework — from FCC source extraction through domain-level attack surface scanning, cross-referenced with CVE and KEV databases and enriched with business intelligence for segmented analysis.</p>
+    <a href="#reports" class="btn-secondary">Download Full Methodology →</a>
+  </div>
+  <div class="method-steps reveal">
+    <div class="method-step">
+      <span class="step-num">01</span>
+      <div class="step-content">
+        <h4>FCC Registry Extraction</h4>
+        <p>Downloaded and compiled all 7,321 FCC-registered carriers across 18 principal communication types. Removed closed operators and deduplicated FRNs — yielding 5,048 active telcos.</p>
+      </div>
+    </div>
+    <div class="method-step">
+      <span class="step-num">02</span>
+      <div class="step-content">
+        <h4>Attack Surface Scanning</h4>
+        <p>Domain-level scans performed across all 5,048 telcos — assessing open ports, CVEs, SSL/TLS configuration, DNS records, subdomain mapping, DMARC/SPF posture, and dangling CNAMEs.</p>
+      </div>
+    </div>
+    <div class="method-step">
+      <span class="step-num">03</span>
+      <div class="step-content">
+        <h4>Vulnerability Intelligence Enrichment</h4>
+        <p>All discovered CVEs cross-referenced against NIST NVD for CVSS scoring and CISA KEV for active exploitation status. EPSS scores used to assess weaponization likelihood.</p>
+      </div>
+    </div>
+    <div class="method-step">
+      <span class="step-num">04</span>
+      <div class="step-content">
+        <h4>Business Profile Construction</h4>
+        <p>15+ business profile fields collected per telco using publicly available data and jeeva.ai — enabling revenue, size, geography, and sector-based segmentation for targeted analysis.</p>
+      </div>
+    </div>
+    <div class="method-step">
+      <span class="step-num">05</span>
+      <div class="step-content">
+        <h4>Statistical Analysis &amp; Inference</h4>
+        <p>Findings aggregated across segments to produce industry-level risk rates, exposure percentages, and threat category distributions. All figures based on the 3,204 successfully scanned domains.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DOWNLOAD / REPORTS -->
+<section class="download-section" id="reports">
+  <div class="section-header reveal">
+    <p class="section-eyebrow">Reports &amp; Downloads</p>
+    <h2 class="section-title">Intelligence your security team can act on</h2>
+  </div>
+  <div class="download-grid">
+    <div class="download-card featured reveal">
+      <div class="featured-pill">Full Report</div>
+      <div class="download-card-tag">Complete Report</div>
+      <h3>2026 US Telco Cybersecurity Risk Report</h3>
+      <p>Full findings across 3,204 scanned telcos — port exposure, CVE analysis, email security posture, DMARC gaps, dangling CNAMEs, threat categories, and remediation recommendations.</p>
+      <div class="download-card-meta">
+        <div class="meta-item"><strong>PDF</strong>Format</div>
+        <div class="meta-item"><strong>Full Report</strong>Depth</div>
+        <div class="meta-item"><strong>Gated</strong>Access</div>
+      </div>
+      <a href="#lookup" class="btn-download">→ Request Access</a>
+    </div>
+    <div class="download-card reveal">
+      <div class="download-card-tag">Executive Summary</div>
+      <h3>C-Suite &amp; Board Briefing</h3>
+      <p>Top-line findings, key risk stats, and priority recommendations distilled for executive decision-makers. Includes sector exposure heat map and cost-of-inaction analysis.</p>
+      <div class="download-card-meta">
+        <div class="meta-item"><strong>PDF</strong>Format</div>
+        <div class="meta-item"><strong>Summary</strong>Depth</div>
+        <div class="meta-item"><strong>Free</strong>Access</div>
+      </div>
+      <a href="#lookup" class="btn-download">↓ Download Summary</a>
+    </div>
+    <div class="download-card reveal">
+      <div class="download-card-tag">Visual Asset</div>
+      <h3>Threat Landscape Infographic</h3>
+      <p>Key vulnerability statistics, top exposed ports, DMARC failure rates, and threat category distribution — visualized for presentations, board briefings, and awareness programs.</p>
+      <div class="download-card-meta">
+        <div class="meta-item"><strong>PDF</strong>Format</div>
+        <div class="meta-item"><strong>2pp</strong>Length</div>
+        <div class="meta-item"><strong>Free</strong>Access</div>
+      </div>
+      <a href="#lookup" class="btn-download">↓ Download Infographic</a>
+    </div>
+    <div class="download-card reveal">
+      <div class="download-card-tag">Subcategory · VoIP</div>
+      <h3>Interconnected VoIP Security Report</h3>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Targeted analysis of the largest telco segment — 1,567 operators — covering SIP exposure, RTP vulnerabilities, and toll fraud vectors.</p>
+      <div class="download-card-meta">
+        <div class="meta-item"><strong>PDF</strong>Format</div>
+        <div class="meta-item"><strong>Segment</strong>Focus</div>
+        <div class="meta-item"><strong>Gated</strong>Access</div>
+      </div>
+      <a href="#lookup" class="btn-download">→ Request Access</a>
+    </div>
+    <div class="download-card reveal">
+      <div class="download-card-tag">Subcategory · Rural</div>
+      <h3>Rural &amp; Small Operator Risk Brief</h3>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Analysis of sub-50-employee telcos — highest proportional exposure rates, minimal security resources, and greatest remediation leverage.</p>
+      <div class="download-card-meta">
+        <div class="meta-item"><strong>PDF</strong>Format</div>
+        <div class="meta-item"><strong>Segment</strong>Focus</div>
+        <div class="meta-item"><strong>Gated</strong>Access</div>
+      </div>
+      <a href="#lookup" class="btn-download">→ Request Access</a>
+    </div>
+    <div class="download-card reveal">
+      <div class="download-card-tag">Dataset</div>
+      <h3>Attack Surface Scan Report</h3>
+      <p>Receive a detailed attack surface analysis specific to your telco's domain — open ports, CVEs, email security posture, and prioritized remediation recommendations.</p>
+      <div class="download-card-meta">
+        <div class="meta-item"><strong>Custom</strong>Format</div>
+        <div class="meta-item"><strong>Your Domain</strong>Scope</div>
+        <div class="meta-item"><strong>On Request</strong>Access</div>
+      </div>
+      <a href="#lookup" class="btn-download">→ Request Your Scan</a>
+    </div>
+  </div>
+</section>
+
+<!-- TELCO LOOKUP -->
+<section class="lookup-section" id="lookup">
+  <div class="lookup-inner">
+    <div class="reveal">
+      <p class="section-eyebrow" style="text-align:center">Telco Vulnerability Check</p>
+      <h2 class="section-title" style="text-align:center;max-width:100%">Is your telco in our dataset?</h2>
+      <p class="lookup-desc">Enter your company name below. If we have your telco in our database, we'll show you a preview of what we found — and how you can get the full picture.</p>
+      <div class="lookup-box">
+        <input type="text" class="lookup-input" id="lookupInput" placeholder="Enter your telco name (e.g. AT&amp;T, Comcast, or a local carrier...)" />
+        <button class="lookup-btn" onclick="doLookup()">Check Now →</button>
+      </div>
+      <div class="lookup-result" id="lookupResult">
+        <div class="lookup-result-name" id="resultName"></div>
+        <div class="lookup-result-meta" id="resultMeta"></div>
+        <div class="lookup-result-hint">Your telco is in our dataset. The full attack surface report includes open port analysis, CVE severity breakdown, email security posture (DMARC/SPF), subdomain exposure, and a prioritized remediation roadmap.</div>
+        <div style="display:flex;gap:0.8rem;flex-wrap:wrap;margin-top:1rem">
+          <a href="#" class="btn-primary" style="font-size:0.72rem;padding:0.75rem 1.4rem">→ Request Full Report</a>
+          <a href="#" class="btn-secondary" style="font-size:0.72rem;padding:0.75rem 1.4rem">→ Free Scan Preview</a>
+        </div>
+      </div>
+      <p id="notFoundMsg" style="display:none;font-size:0.82rem;color:var(--static);text-align:center;font-family:'DM Mono',monospace;margin-top:0.8rem">No exact match found — but your telco may still be in our dataset. <a href="#" style="color:var(--signal)">Contact us</a> for a manual lookup.</p>
+      <p class="lookup-cta-text">Don't see your company? <a href="#" style="color:var(--signal)">Request a free scan of your domain →</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FOOTER -->
+<div class="cta-footer">
+  <div class="cta-footer-content">
+    <h2>Your telco's vulnerabilities are being exploited right now</h2>
+    <p>80% of US telcos are exposed. The cost of inaction grows every day. Download the report — or let us show you exactly where your gaps are.</p>
+    <div class="footer-actions">
+      <a href="#reports" class="btn-primary">↓ Download Full Report</a>
+      <a href="#lookup" class="btn-secondary">Check Your Telco →</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-brand">TCIR · 2026</div>
+  <ul class="footer-links">
+    <li><a href="#methodology">Methodology</a></li>
+    <li><a href="#">Privacy</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+  <span class="footer-copy">© 2026 US Telco Cybersecurity Intelligence Report. All rights reserved.</span>
+</footer>
+
+<script>
+// Scroll reveal
+const revealEls = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 70);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.08 });
+revealEls.forEach(el => observer.observe(el));
+
+// Animate bars when visible
+const allFills = document.querySelectorAll('.threat-bar-fill, .pbar-fill, .vbar-fill');
+const barObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('loaded'); barObs.unobserve(e.target); }
+  });
+}, { threshold: 0.2 });
+allFills.forEach(b => barObs.observe(b));
+
+// Stagger threat dots
+document.querySelectorAll('.threat-dot').forEach((dot, i) => {
+  dot.style.animationDelay = `${i * 0.28}s`;
+});
+
+// Telco lookup (client-side demo with sample data)
+const sampleTelcos = [
+  { name: "AT&T", state: "TX", type: "Incumbent LEC", rev: "$120B+" },
+  { name: "Comcast", state: "PA", type: "Cable TV / Broadband", rev: "$116B+" },
+  { name: "Verizon", state: "NY", type: "Cellular/PCS/SMR", rev: "$134B+" },
+  { name: "T-Mobile", state: "WA", type: "Cellular/PCS/SMR", rev: "$79B+" },
+  { name: "Lumen Technologies", state: "CO", type: "Incumbent LEC", rev: "$14B" },
+  { name: "Vonage", state: "NJ", type: "Interconnected VoIP", rev: "$1.4B" },
+  { name: "RingCentral", state: "CA", type: "Interconnected VoIP", rev: "$2.1B" },
+  { name: "Charter", state: "CT", type: "Cable TV provider", rev: "$54B" },
+  { name: "Cox", state: "GA", type: "Cable TV provider", rev: "$22B" },
+  { name: "Frontier", state: "TX", type: "Incumbent LEC", rev: "$5.7B" },
+  { name: "Windstream", state: "AR", type: "Incumbent LEC", rev: "$5.2B" },
+  { name: "CenturyLink", state: "LA", type: "Incumbent LEC", rev: "See Lumen" },
+  { name: "Spectrum", state: "NY", type: "Cable TV provider", rev: "See Charter" },
+];
+
+function doLookup() {
+  const query = document.getElementById('lookupInput').value.trim().toLowerCase();
+  const result = document.getElementById('lookupResult');
+  const notFound = document.getElementById('notFoundMsg');
+  result.classList.remove('visible');
+  notFound.style.display = 'none';
+  if (!query) return;
+  const match = sampleTelcos.find(t => t.name.toLowerCase().includes(query) || query.includes(t.name.toLowerCase()));
+  if (match) {
+    document.getElementById('resultName').textContent = match.name;
+    document.getElementById('resultMeta').textContent = `${match.type} · ${match.state} · Revenue: ${match.rev} · In our scan dataset`;
+    result.classList.add('visible');
+  } else if (query.length > 2) {
+    // Show "might be in dataset" for unknown names
+    document.getElementById('resultName').textContent = query.charAt(0).toUpperCase() + query.slice(1);
+    document.getElementById('resultMeta').textContent = `Telco identified in FCC registry · Full lookup requires verification`;
+    result.classList.add('visible');
+  }
+}
+
+document.getElementById('lookupInput').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') doLookup();
+});
+</script>
+</body>
+</html>
